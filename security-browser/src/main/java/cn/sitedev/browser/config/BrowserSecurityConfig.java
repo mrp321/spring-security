@@ -17,22 +17,17 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //表单登陆
         http.formLogin()
+                // 自定义登陆页面
+                .loginPage("/signIn.html")
                 .and()
                 // 对请求进行授权
                 .authorizeRequests()
+                // 当访问该url时,不需要身份验证
+                // 如果不加这个配置,浏览器访问signIn.html页面时,会报错:"localhost 将您重定向的次数过多"
+                .antMatchers("/signIn.html").permitAll()
                 // 任何请求
                 .anyRequest()
                 // 都进行授权认证
                 .authenticated();
-
-//        // 基础验证
-//        http.httpBasic()
-//                .and()
-//                // 对请求进行授权
-//                .authorizeRequests()
-//                // 任何请求
-//                .anyRequest()
-//                // 都进行授权认证
-//                .authenticated();
     }
 }
