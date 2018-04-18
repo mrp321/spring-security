@@ -1,5 +1,7 @@
 package cn.sitedev.browser.config;
 
+import cn.sitedev.browser.auth.MyAuthFailureHandler;
+import cn.sitedev.browser.auth.MyAuthSuccessHandler;
 import cn.sitedev.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +18,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SecurityProperties securityProperties;
+    @Autowired
+    private MyAuthSuccessHandler myAuthSuccessHandler;
+    @Autowired
+    private MyAuthFailureHandler myAuthFailureHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -28,6 +34,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 自定义认证用户名和密码的url
                 // 即,客户在登录页面中按下"sign in"按钮时,要访问的url,与登录页的form action一致
                 .loginProcessingUrl(loginProcUrl)
+                // 自定义认证成功处理器
+                .successHandler(myAuthSuccessHandler)
+                // 自定义认证失败处理器
+                .failureHandler(myAuthFailureHandler)
                 .and()
                 // 对请求进行授权
                 .authorizeRequests()
