@@ -3,10 +3,12 @@ package cn.sitedev.browser.config;
 import cn.sitedev.browser.auth.MyAuthFailureHandler;
 import cn.sitedev.browser.auth.MyAuthSuccessHandler;
 import cn.sitedev.core.properties.SecurityProperties;
+import cn.sitedev.core.valicode.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 /**
@@ -25,10 +27,14 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+        validateCodeFilter.setAuthenticationFailureHandler(myAuthFailureHandler);
         String loginPage = "/auth/require";
         String loginProcUrl = "/auth/form";
-        //表单登陆
-        http.formLogin()
+        // 在UsernamePasswordAuthenticationFilter前添加验证码过滤器
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                //表单登陆
+                .formLogin()
                 // 自定义登陆页面
                 .loginPage(loginPage)
                 // 自定义认证用户名和密码的url
@@ -43,7 +49,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 当访问该url时,不需要身份验证
                 // 如果不加这个配置,浏览器访问登录页面时,会报错:"localhost 将您重定向的次数过多"
-                .antMatchers(loginPage, securityProperties.getBrowser().getLoginPage()).permitAll()
+                .antMatchers(loginPage, securityProperties.getBrowser().getLoginPage(), "/code/image").permitAll()
                 // 任何请求
                 .anyRequest()
                 // 都进行授权认证

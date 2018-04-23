@@ -1,5 +1,6 @@
 package cn.sitedev.browser.auth;
 
+import cn.sitedev.browser.support.SimpleResponse;
 import cn.sitedev.core.properties.LoginType;
 import cn.sitedev.core.properties.SecurityProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,7 +49,8 @@ public class MyAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler 
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setContentType("application/json;charset=UTF-8");
             // objectMapper.writeValueAsString(exception):将AuthenticationException对象写成json格式的字符串
-            response.getWriter().write(objectMapper.writeValueAsString(exception));
+            // 由于异常信息可能过多,因此,这里只显示message
+            response.getWriter().write(objectMapper.writeValueAsString(new SimpleResponse(exception.getMessage())));
         } else {
             // 如果不是JSON,就调用父类的方法(重定向)
             super.onAuthenticationFailure(request, response, exception);
