@@ -5,10 +5,16 @@ import cn.sitedev.browser.auth.MyAuthSuccessHandler;
 import cn.sitedev.core.properties.SecurityProperties;
 import cn.sitedev.core.valicode.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 
 /**
@@ -33,6 +39,29 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Autowired
     private MyAuthFailureHandler myAuthFailureHandler;
+    /**
+     * 数据源
+     */
+    @Autowired
+    private DataSource dataSource;
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    /**
+     * token repository
+     *
+     * @return
+     */
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        //基于JDBC的持久登录令牌存储库实现
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        // 配置数据源
+        tokenRepository.setDataSource(dataSource);
+        // 启动时自动建表(建表后请将该行注释,否则会报错)
+//        tokenRepository.setCreateTableOnStartup(true);
+        return tokenRepository;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -57,6 +86,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(myAuthSuccessHandler)
                 // 自定义认证失败处理器
                 .failureHandler(myAuthFailureHandler)
+                .and()
+                // 记住我功能配置
+                .rememberMe()
+                .tokenRepository(persistentTokenRepository())
+                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                .userDetailsService(userDetailsService)
                 .and()
                 // 对请求进行授权
                 .authorizeRequests()
