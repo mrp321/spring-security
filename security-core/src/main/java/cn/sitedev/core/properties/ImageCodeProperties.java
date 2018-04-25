@@ -22,6 +22,10 @@ public class ImageCodeProperties {
      * 有效期(单位:s)
      */
     private int expireIn = 60;
+    /**
+     * 需要图片验证码校验的url(如果有多个,用逗号分隔)
+     */
+    private String url;
 
     public int getWidth() {
         return width;
@@ -53,5 +57,13 @@ public class ImageCodeProperties {
 
     public void setExpireIn(int expireIn) {
         this.expireIn = expireIn;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

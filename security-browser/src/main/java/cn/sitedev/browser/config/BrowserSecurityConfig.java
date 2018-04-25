@@ -18,17 +18,30 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
+    /**
+     * 安全属性类
+     */
     @Autowired
     private SecurityProperties securityProperties;
+    /**
+     * 认证成功处理器
+     */
     @Autowired
     private MyAuthSuccessHandler myAuthSuccessHandler;
+    /**
+     * 认证失败处理器
+     */
     @Autowired
     private MyAuthFailureHandler myAuthFailureHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+        // 设置认证失败处理器
         validateCodeFilter.setAuthenticationFailureHandler(myAuthFailureHandler);
+        // 设置安全属性类
+        validateCodeFilter.setSecurityProperties(securityProperties);
+        validateCodeFilter.afterPropertiesSet();
         String loginPage = "/auth/require";
         String loginProcUrl = "/auth/form";
         // 在UsernamePasswordAuthenticationFilter前添加验证码过滤器
