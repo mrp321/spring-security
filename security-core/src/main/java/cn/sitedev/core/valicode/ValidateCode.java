@@ -1,18 +1,13 @@
 package cn.sitedev.core.valicode;
 
-import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 
 /**
- * @description: 图片验证码
+ * @description: 验证码父类
  * @author: QChen
- * @create: 2018/4/18 0018
+ * @create: 2018/4/26 0018
  **/
-public class ImageCode {
-    /**
-     * 图片
-     */
-    private BufferedImage image;
+public class ValidateCode {
     /**
      * 验证码
      */
@@ -22,20 +17,12 @@ public class ImageCode {
      */
     private LocalDateTime expireTime;
 
-    public ImageCode(BufferedImage image, String code, int expireIn) {
-        this.image = image;
+    public ValidateCode(String code, int expireIn) {
         this.code = code;
         // 指定xx秒后验证码过期
         this.expireTime = LocalDateTime.now().plusSeconds(expireIn);
     }
 
-    public BufferedImage getImage() {
-        return image;
-    }
-
-    public void setImage(BufferedImage image) {
-        this.image = image;
-    }
 
     public String getCode() {
         return code;

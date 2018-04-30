@@ -1,6 +1,7 @@
 package cn.sitedev.core.valicode;
 
 import cn.sitedev.core.properties.SecurityProperties;
+import cn.sitedev.core.valicode.image.ImageCode;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;

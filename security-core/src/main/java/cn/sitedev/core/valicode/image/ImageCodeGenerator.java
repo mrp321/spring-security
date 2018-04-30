@@ -1,6 +1,7 @@
-package cn.sitedev.core.valicode;
+package cn.sitedev.core.valicode.image;
 
 import cn.sitedev.core.properties.SecurityProperties;
+import cn.sitedev.core.valicode.ValidateCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;

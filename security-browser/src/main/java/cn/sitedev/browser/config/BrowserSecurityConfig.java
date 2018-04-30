@@ -97,7 +97,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 当访问该url时,不需要身份验证
                 // 如果不加这个配置,浏览器访问登录页面时,会报错:"localhost 将您重定向的次数过多"
-                .antMatchers(loginPage, securityProperties.getBrowser().getLoginPage(), "/code/image").permitAll()
+                .antMatchers(loginPage, securityProperties.getBrowser().getLoginPage(), "/code/*").permitAll()
                 // 任何请求
                 .anyRequest()
                 // 都进行授权认证
