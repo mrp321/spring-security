@@ -2,7 +2,9 @@ package cn.sitedev.browser.config;
 
 import cn.sitedev.browser.auth.MyAuthFailureHandler;
 import cn.sitedev.browser.auth.MyAuthSuccessHandler;
+import cn.sitedev.core.auth.mobile.SmsCodeAuthenticationSecurityConfig;
 import cn.sitedev.core.properties.SecurityProperties;
+import cn.sitedev.core.valicode.SmsCodeFilter;
 import cn.sitedev.core.valicode.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -33,12 +37,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
      * 认证成功处理器
      */
     @Autowired
-    private MyAuthSuccessHandler myAuthSuccessHandler;
+    private AuthenticationSuccessHandler myAuthSuccessHandler;
     /**
      * 认证失败处理器
      */
     @Autowired
-    private MyAuthFailureHandler myAuthFailureHandler;
+    private AuthenticationFailureHandler myAuthFailureHandler;
     /**
      * 数据源
      */
@@ -46,6 +50,11 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     private DataSource dataSource;
     @Autowired
     private UserDetailsService userDetailsService;
+    /**
+     * 短信验证码验证安全配置类
+     */
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
     /**
      * token repository
@@ -65,16 +74,26 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //-------------- 验证码过滤器配置------------
         ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
         // 设置认证失败处理器
         validateCodeFilter.setAuthenticationFailureHandler(myAuthFailureHandler);
         // 设置安全属性类
         validateCodeFilter.setSecurityProperties(securityProperties);
         validateCodeFilter.afterPropertiesSet();
+        // --------------短信验证码过滤器配置------------
+        SmsCodeFilter smsCodeFilter = new SmsCodeFilter();
+        // 设置认证失败处理器
+        smsCodeFilter.setAuthenticationFailureHandler(myAuthFailureHandler);
+        // 设置安全属性类
+        smsCodeFilter.setSecurityProperties(securityProperties);
+        smsCodeFilter.afterPropertiesSet();
+
         String loginPage = "/auth/require";
         String loginProcUrl = "/auth/form";
         // 在UsernamePasswordAuthenticationFilter前添加验证码过滤器
-        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+        http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 //表单登陆
                 .formLogin()
                 // 自定义登陆页面
@@ -97,7 +116,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 当访问该url时,不需要身份验证
                 // 如果不加这个配置,浏览器访问登录页面时,会报错:"localhost 将您重定向的次数过多"
-                .antMatchers(loginPage, securityProperties.getBrowser().getLoginPage(), "/code/*").permitAll()
+                .antMatchers(loginPage, "/auth/mobile/", securityProperties.getBrowser().getLoginPage(), "/code/*").permitAll()
                 // 任何请求
                 .anyRequest()
                 // 都进行授权认证
@@ -106,6 +125,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 此处暂时关闭CSRF(跨站防护)
                 // 如果不关闭,登陆成功后,会报下面的错误
                 // Invalid CSRF Token 'null' was found on the request parameter '_csrf' or header 'X-CSRF-TOKEN'.
-                .csrf().disable();
+                .csrf().disable()
+                // 应用配置
+                .apply(smsCodeAuthenticationSecurityConfig);
     }
 }
