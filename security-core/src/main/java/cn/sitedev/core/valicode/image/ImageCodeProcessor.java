@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
  * @date 2018/4/30
  */
 
-@Component
+@Component("imageValidateCodeProcessor")
 public class ImageCodeProcessor extends AbstractValidateCodeProcessor<ImageCode> {
     /**
      * 发送图形验证码,将其写到响应中

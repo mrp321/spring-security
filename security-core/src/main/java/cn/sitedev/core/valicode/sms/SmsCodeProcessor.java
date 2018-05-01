@@ -1,5 +1,6 @@
 package cn.sitedev.core.valicode.sms;
 
+import cn.sitedev.core.properties.SecurityConstants;
 import cn.sitedev.core.valicode.ValidateCode;
 import cn.sitedev.core.valicode.impl.AbstractValidateCodeProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import javax.servlet.Servlet;
  * @auther qchen
  * @date 2018/4/30
  */
-@Component
+@Component("smsValidateCodeProcessor")
 public class SmsCodeProcessor extends AbstractValidateCodeProcessor<ValidateCode> {
     /**
      * 短信验证码发送器
@@ -32,7 +33,7 @@ public class SmsCodeProcessor extends AbstractValidateCodeProcessor<ValidateCode
      */
     @Override
     protected void send(ServletWebRequest request, ValidateCode validateCode) throws Exception {
-        String mobile = ServletRequestUtils.getRequiredStringParameter(request.getRequest(), "mobileNo");
+        String mobile = ServletRequestUtils.getRequiredStringParameter(request.getRequest(), SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE);
         smsCodeSender.send(mobile, validateCode.getCode());
     }
 }

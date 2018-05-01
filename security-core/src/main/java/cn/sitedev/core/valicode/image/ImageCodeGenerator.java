@@ -3,6 +3,7 @@ package cn.sitedev.core.valicode.image;
 import cn.sitedev.core.properties.SecurityProperties;
 import cn.sitedev.core.valicode.ValidateCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -15,6 +16,7 @@ import java.util.Random;
  * @author: QChen
  * @create: 2018/4/26 0026
  **/
+@Component("imageValidateCodeGenerator")
 public class ImageCodeGenerator implements ValidateCodeGenerator {
     /**
      * 安全属性类

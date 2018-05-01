@@ -9,7 +9,7 @@ public class BrowserProperties {
     /**
      * 登录页(这里指定默认的登录页)
      */
-    private String loginPage = "/signIn.html";
+    private String loginPage = SecurityConstants.DEFAULT_LOGIN_PAGE_URL;
     /**
      * 登陆类型(默认返回json)
      */

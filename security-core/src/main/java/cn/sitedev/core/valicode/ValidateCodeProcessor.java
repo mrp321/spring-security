@@ -24,4 +24,11 @@ public interface ValidateCodeProcessor {
      */
     // ServletWebRequest:spring的工具类,封装请求和响应
     void create(ServletWebRequest request) throws Exception;
+
+    /**
+     * 验证码校验
+     *
+     * @param request
+     */
+    void validate(ServletWebRequest request);
 }

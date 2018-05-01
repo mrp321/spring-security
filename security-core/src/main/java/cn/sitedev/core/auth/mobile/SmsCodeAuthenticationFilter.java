@@ -1,5 +1,6 @@
 package cn.sitedev.core.auth.mobile;
 
+import cn.sitedev.core.properties.SecurityConstants;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,9 +23,18 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
     private boolean postOnly = true;
 
     public SmsCodeAuthenticationFilter() {
-        super(new AntPathRequestMatcher("/auth/mobile", "POST"));
+        // 拦截路径
+        super(new AntPathRequestMatcher(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE, "POST"));
     }
 
+    /**
+     * 获取手机号封装到SmsCodeAuthenticationToken实例中
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws AuthenticationException
+     */
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         if (this.postOnly && !request.getMethod().equals("POST")) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
@@ -50,12 +60,22 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
         return request.getParameter(this.mobileNoParameter);
     }
 
+    /**
+     * 把请求信息也放到Token里面
+     *
+     * @param request
+     * @param authRequest
+     */
     protected void setDetails(HttpServletRequest request, SmsCodeAuthenticationToken authRequest) {
         authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
     }
 
     public void setPostOnly(boolean postOnly) {
         this.postOnly = postOnly;
+    }
+
+    public final String getMobileParameter() {
+        return mobileNoParameter;
     }
 
 }

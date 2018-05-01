@@ -18,7 +18,7 @@ import java.util.Random;
  * @author: QChen
  * @create: 2018/4/26 0026
  **/
-@Component
+@Component("smsValidateCodeGenerator")
 public class SmsCodeGenerator implements ValidateCodeGenerator {
     /**
      * 安全属性类

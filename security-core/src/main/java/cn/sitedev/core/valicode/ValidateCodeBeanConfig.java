@@ -16,21 +16,14 @@ import org.springframework.context.annotation.Configuration;
  **/
 @Configuration
 public class ValidateCodeBeanConfig {
-    /**
-     * 安全属性类
-     */
-    @Autowired
-    private SecurityProperties securityProperties;
 
     @Bean
     // 初始化bean之前会先在spring容器中寻找是否有一个叫做imageCodeGenerator的bean
     // 如果能够找到,就使用找到的那个bean
     // 如果找不到,就使用这个bean
-    @ConditionalOnMissingBean(name = "imageCodeGenerator")
+    @ConditionalOnMissingBean(name = "imageValidateCodeGenerator")
     public ValidateCodeGenerator imageCodeGenerator() {
-        ImageCodeGenerator imageCodeGenerator = new ImageCodeGenerator();
-        imageCodeGenerator.setSecurityProperties(securityProperties);
-        return imageCodeGenerator;
+        return new ImageCodeGenerator();
     }
 
     @Bean
