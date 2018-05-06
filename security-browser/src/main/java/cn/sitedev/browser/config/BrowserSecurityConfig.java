@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
@@ -47,6 +48,11 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
      */
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+    /**
+     * 社交安全配置类
+     */
+    @Autowired
+    private SpringSocialConfigurer mySocialSecurityConfig;
 
     /**
      * token repository
@@ -73,6 +79,10 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 .and()
                 // 应用短信验证码相关配置
                 .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+                // 应用社交安全相关配置
+                // 配置的作用就是向Spring Security的过滤器链上添加一个过滤器,过滤器会拦截特定请求,引导用户进行社交登录
+                .apply(mySocialSecurityConfig)
                 .and()
                 // 记住我功能配置
                 .rememberMe()
