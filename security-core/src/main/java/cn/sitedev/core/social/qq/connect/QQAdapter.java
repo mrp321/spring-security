@@ -1,4 +1,4 @@
-package cn.sitedev.core.social.connect;
+package cn.sitedev.core.social.qq.connect;
 
 import cn.sitedev.core.social.qq.api.QQ;
 import cn.sitedev.core.social.qq.api.QQUserInfo;

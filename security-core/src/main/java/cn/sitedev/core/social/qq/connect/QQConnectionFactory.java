@@ -1,9 +1,7 @@
-package cn.sitedev.core.social.connect;
+package cn.sitedev.core.social.qq.connect;
 
 import cn.sitedev.core.social.qq.api.QQ;
-import org.springframework.social.connect.ApiAdapter;
 import org.springframework.social.connect.support.OAuth2ConnectionFactory;
-import org.springframework.social.oauth2.OAuth2ServiceProvider;
 
 /**
  * @description QQ Connection 工厂类

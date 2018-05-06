@@ -14,6 +14,10 @@ public class SocialProperties {
      * QQ属性类
      */
     private QQProperties qq = new QQProperties();
+    /**
+     * 微信属性类
+     */
+    private WeixinProperties weixin = new WeixinProperties();
 
     public QQProperties getQq() {
         return qq;
@@ -29,5 +33,13 @@ public class SocialProperties {
 
     public void setFilterProcessesUrl(String filterProcessesUrl) {
         this.filterProcessesUrl = filterProcessesUrl;
+    }
+
+    public WeixinProperties getWeixin() {
+        return weixin;
+    }
+
+    public void setWeixin(WeixinProperties weixin) {
+        this.weixin = weixin;
     }
 }
