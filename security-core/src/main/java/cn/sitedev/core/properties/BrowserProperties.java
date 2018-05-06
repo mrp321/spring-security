@@ -18,6 +18,10 @@ public class BrowserProperties {
      * "记住我"时间长度(默认设置3600s)
      */
     private int rememberMeSeconds = 3600;
+    /**
+     * 默认注册页
+     */
+    private String signUpUrl = "/signUp.html";
 
     public String getLoginPage() {
         return loginPage;
@@ -41,5 +45,13 @@ public class BrowserProperties {
 
     public void setRememberMeSeconds(int rememberMeSeconds) {
         this.rememberMeSeconds = rememberMeSeconds;
+    }
+
+    public String getSignUpUrl() {
+        return signUpUrl;
+    }
+
+    public void setSignUpUrl(String signUpUrl) {
+        this.signUpUrl = signUpUrl;
     }
 }

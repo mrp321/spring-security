@@ -8,8 +8,10 @@ import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.config.annotation.SocialConfigurerAdapter;
 import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
+import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
@@ -26,6 +28,10 @@ public class SocialConfig extends SocialConfigurerAdapter {
     private DataSource dataSource;
     @Autowired
     private SecurityProperties securityProperties;
+    @Autowired
+    private ConnectionFactoryLocator connectionFactoryLocator;
+    @Autowired(required = false)
+    private ConnectionSignUp connectionSignUp;
 
     /**
      * 获取用户连接仓库
@@ -42,6 +48,10 @@ public class SocialConfig extends SocialConfigurerAdapter {
         JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
         // 设置表的前缀
         repository.setTablePrefix("t_");
+        if (connectionSignUp != null) {
+            // 如果从UserConnection表中查询不到userId ,则在UserConnection中插入一条新数据
+            repository.setConnectionSignUp(connectionSignUp);
+        }
         return repository;
     }
 
@@ -50,6 +60,14 @@ public class SocialConfig extends SocialConfigurerAdapter {
         // 这里使用自定义的SpringSocialConfigurer
         String filterProcessesUrl = securityProperties.getSocial().getFilterProcessesUrl();
         MySpringSocialConfigurer configurer = new MySpringSocialConfigurer(filterProcessesUrl);
+        //设置注册页面
+        configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
         return configurer;
+    }
+
+    @Bean
+    public ProviderSignInUtils providerSignInUtils(ConnectionFactoryLocator connectionFactoryLocator) {
+        // ProviderSignInUtils:支持提供服务提供商用户登录场景的工具类
+        return new ProviderSignInUtils(connectionFactoryLocator, getUsersConnectionRepository(connectionFactoryLocator));
     }
 }

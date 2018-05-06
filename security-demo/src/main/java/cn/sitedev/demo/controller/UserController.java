@@ -1,8 +1,12 @@
 package cn.sitedev.demo.controller;
 
 import cn.sitedev.demo.dto.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletWebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +19,17 @@ import java.util.List;
 @RestController
 @RequestMapping("user")
 public class UserController {
+    @Autowired
+    private ProviderSignInUtils providerSignInUtils;
+
+    @PostMapping("regist")
+    public void regist(User user, HttpServletRequest request) {
+        // 不管时注册用户,还是绑定用户,都会拿到一个唯一标识
+        String userId = user.getUsername();
+        // 执行注册操作,向数据库UserConnection中插入数据
+        providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+
+    }
 
     /**
      * 增加用户
@@ -31,13 +46,13 @@ public class UserController {
         return user;
     }
 
-/**
- * @description
- * @author QChen
- * @date 2018/4/13 0013
- * @param
- * @return
- */
+    /**
+     * @param
+     * @return
+     * @description
+     * @author QChen
+     * @date 2018/4/13 0013
+     */
     @DeleteMapping("/{id:\\d+}")
     public void deleteUser(@PathVariable String id) {
         System.out.println("删除id=" + id);
