@@ -2,6 +2,10 @@ package cn.sitedev.demo.controller;
 
 import cn.sitedev.demo.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -29,6 +33,40 @@ public class UserController {
         // 执行注册操作,向数据库UserConnection中插入数据
         providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
 
+    }
+
+    /**
+     * 从SecurityContext中获取用户信息
+     *
+     * @return
+     */
+    @GetMapping("/me")
+    public Object getCurUser() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+
+    /**
+     * 从SecurityContext中获取用户信息(Spring Social会自动从SecurityContext中获取Authentication)
+     *
+     * @param authenction
+     * @return
+     */
+    // 或者:
+    @GetMapping("/me2")
+    public Object getCurUser(Authentication authenction) {
+        return authenction;
+    }
+
+    /**
+     * 从Authentication中获取Principal中的对象(这里是UserDetails)
+     *
+     * @param userDetails
+     * @return
+     */
+    @GetMapping("/me3")
+    public Object getCurUser(@AuthenticationPrincipal UserDetails userDetails) {
+        return userDetails;
     }
 
     /**

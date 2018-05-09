@@ -18,6 +18,10 @@ public class SocialProperties {
      * 微信属性类
      */
     private WeixinProperties weixin = new WeixinProperties();
+    /**
+     * 新浪微博属性类
+     */
+    private WeiboProperties weibo = new WeiboProperties();
 
     public QQProperties getQq() {
         return qq;
@@ -41,5 +45,13 @@ public class SocialProperties {
 
     public void setWeixin(WeixinProperties weixin) {
         this.weixin = weixin;
+    }
+
+    public WeiboProperties getWeibo() {
+        return weibo;
+    }
+
+    public void setWeibo(WeiboProperties weibo) {
+        this.weibo = weibo;
     }
 }
