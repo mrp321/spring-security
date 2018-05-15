@@ -6,6 +6,7 @@ package cn.sitedev.browser.controller;/**
 
 import cn.sitedev.browser.support.SimpleResponse;
 import cn.sitedev.browser.support.SocialUserInfo;
+import cn.sitedev.core.properties.SecurityConstants;
 import cn.sitedev.core.properties.SecurityProperties;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -66,7 +67,7 @@ public class BrowserSecurityController {
      * @author QChen
      * @date 2018/4/16 0016 21:54
      */
-    @RequestMapping("/auth/require")
+    @RequestMapping(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
     // 返回401状态码
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     public SimpleResponse requireAuth(HttpServletRequest request, HttpServletResponse response) throws IOException {

@@ -4,6 +4,7 @@ import cn.sitedev.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.config.annotation.SocialConfigurerAdapter;
@@ -23,6 +24,8 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableSocial
+// @Order 注解指定该组件的加载顺序,这里不指定顺序,可能会导致本类中getUsersConnectionRepository方法中的配置不生效
+@Order(1)
 public class SocialConfig extends SocialConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
