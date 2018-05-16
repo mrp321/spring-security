@@ -2,12 +2,17 @@ package cn.sitedev.core.social.qq.config;
 
 import cn.sitedev.core.properties.QQProperties;
 import cn.sitedev.core.properties.SecurityProperties;
+import cn.sitedev.core.social.MyConnectView;
+import cn.sitedev.core.social.MyConnectionStatusView;
 import cn.sitedev.core.social.qq.connect.QQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.social.SocialAutoConfigurerAdapter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.connect.ConnectionFactory;
+import org.springframework.web.servlet.View;
 
 /**
  * @description QQ自动配置类
@@ -28,5 +33,11 @@ public class QQAutoConfig extends SocialAutoConfigurerAdapter {
         QQProperties qqProperties = securityProperties.getSocial().getQq();
 
         return new QQConnectionFactory(qqProperties.getProviderId(), qqProperties.getAppId(), qqProperties.getAppSecret());
+    }
+
+    @Bean({"/connect/qqConnected", "/connect/qqConnect"})
+    @ConditionalOnMissingBean(name = "qqConnectedView")
+    public View qqConnectedView() {
+        return new MyConnectView();
     }
 }
