@@ -1,4 +1,4 @@
-package cn.sitedev.core.social;
+package cn.sitedev.core.social.view;
 
 import org.springframework.web.servlet.view.AbstractView;
 

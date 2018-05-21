@@ -1,4 +1,4 @@
-package cn.sitedev.core.social;
+package cn.sitedev.core.social.view;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;

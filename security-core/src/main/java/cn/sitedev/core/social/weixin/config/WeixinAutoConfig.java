@@ -2,7 +2,7 @@ package cn.sitedev.core.social.weixin.config;
 
 import cn.sitedev.core.properties.SecurityProperties;
 import cn.sitedev.core.properties.WeixinProperties;
-import cn.sitedev.core.social.MyConnectView;
+import cn.sitedev.core.social.view.MyConnectView;
 import cn.sitedev.core.social.weixin.connect.WeixinConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

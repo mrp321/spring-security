@@ -2,7 +2,7 @@ package cn.sitedev.core.social.weibo.config;
 
 import cn.sitedev.core.properties.SecurityProperties;
 import cn.sitedev.core.properties.WeiboProperties;
-import cn.sitedev.core.social.MyConnectView;
+import cn.sitedev.core.social.view.MyConnectView;
 import cn.sitedev.core.social.weibo.connect.WeiboConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
