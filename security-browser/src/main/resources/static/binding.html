@@ -6,11 +6,98 @@
 </head>
 <body>
 <h2>标准绑定页面</h2>
-<form action="/connect/qq/" method="post">
-    <button type="submit">绑定qq</button>
+<form id="bindingForm" method="post">
+    <input id="method" type="hidden" name="_method" value="delete"/>
 </form>
-<form action="/connect/weibo/" method="post">
-    <button type="submit">绑定weibo</button>
-</form>
+<div class="other_login">
+    <div class="other_right">
+        <a id="bindingQq" href="javascript:void(0)">绑定/解绑qq</a><br/>
+        <a id="bindingWeixin" href="javascript:void(0)">绑定/解绑weixin</a><br/>
+        <a id="bindingWeibo" href="javascript:void(0)">绑定/解绑weibo</a><br/>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(function () {
+        $.ajax({
+            url: "/connect",
+            type: "get",
+            async: true,
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                if (data.success) {
+                    if (data.qq) {
+                        //解绑
+                        $("#bindingQq").attr("title", "解绑")
+                    } else {
+                        //绑定
+                        $("#bindingQq").attr("title", "绑定")
+                    }
+                    if (data.weixin) {
+                        //解绑
+                        $("#bindingWeixin").attr("title", "解绑")
+                    } else {
+                        //绑定
+                        $("#bindingWeixin").attr("title", "绑定")
+                    }
+                    if (data.weibo) {
+                        //解绑
+                        $("#bindingWeibo").attr("title", "解绑")
+                    } else {
+                        //绑定
+                        $("#bindingWeibo").attr("title", "绑定")
+                    }
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown); // paser error;
+            }
+
+        });
+
+        $("#bindingQq").click(function () {
+            var title = $("#bindingQq").attr("title");
+            $("#bindingForm").attr("action", "/connect/qq");
+            if ("绑定" === title) {
+                //执行绑定操作
+                $("#method").val("post");
+                $("#bindingForm").submit();
+            } else {
+                //执行解绑事件
+                $("#method").val("delete");
+                $("#bindingForm").submit();
+            }
+        });
+        $("#bindingWeixin").click(function () {
+            var title = $("#bindingWeixin").attr("title");
+            $("#bindingForm").attr("action", "/connect/weixin");
+            if ("绑定" === title) {
+                //执行绑定操作
+                $("#method").val("post");
+                $("#bindingForm").submit();
+            } else {
+                //执行解绑事件
+                $("#method").val("delete");
+                $("#bindingForm").submit();
+            }
+        });
+        $("#bindingWeibo").click(function () {
+            var title = $("#bindingWeibo").attr("title");
+            $("#bindingForm").attr("action", "/connect/weibo");
+            if ("绑定" === title) {
+                //执行绑定操作
+                $("#method").val("post");
+                $("#bindingForm").submit();
+            } else {
+                //执行解绑事件
+                $("#method").val("delete");
+                $("#bindingForm").submit();
+            }
+        });
+    });
+</script>
 </body>
 </html>

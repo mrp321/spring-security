@@ -34,7 +34,7 @@ public class WeiboAutoConfig extends SocialAutoConfigurerAdapter {
         return new WeiboConnectionFactory(weiboProperties.getProviderId(), weiboProperties.getAppId(), weiboProperties.getAppSecret());
     }
 
-    @Bean({"/connect/weiboConnected", "/connect/weiboConnect"})
+    @Bean({"connect/weiboConnected", "connect/weiboConnect"})
     @ConditionalOnMissingBean(name = "weiboConnectedView")
     public View weiboConnectedView() {
         return new MyConnectView();

@@ -39,11 +39,11 @@ public class WeixinAutoConfig extends SocialAutoConfigurerAdapter {
     }
 
     /**
-     * 绑定:'/connect/' + providerId + 'Connected'
-     * 解绑:'/connect/' + providerId + 'Connect'
+     * 绑定:'connect/' + providerId + 'Connected'
+     * 解绑:'connect/' + providerId + 'Connect'
      * @return
      */
-    @Bean({"/connect/weixinConnected", "/connect/weixinConnect"})
+    @Bean({"connect/weixinConnected", "connect/weixinConnect"})
     @ConditionalOnMissingBean(name = "weixinConnectedView")
     public View weixinConnectedView() {
         return new MyConnectView();

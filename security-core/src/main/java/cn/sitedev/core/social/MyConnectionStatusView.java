@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description 渲染所有服务提供商绑定状态的视图
+ * @description 社交账号绑定状态视图
  * @auther qchen
  * @date 2018/5/15
  */
@@ -35,6 +35,8 @@ public class MyConnectionStatusView extends AbstractView {
         for (String key : connections.keySet()) {
             result.put(key, CollectionUtils.isNotEmpty(connections.get(key)));
         }
+        // 添加成功标识
+        result.put("success", true);
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(result));
     }
