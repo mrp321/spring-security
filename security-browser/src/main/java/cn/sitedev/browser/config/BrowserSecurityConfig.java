@@ -1,5 +1,6 @@
 package cn.sitedev.browser.config;
 
+import cn.sitedev.browser.session.MyExpiredSessionStrategy;
 import cn.sitedev.core.auth.AbstractChannelSecurityConfig;
 import cn.sitedev.core.auth.mobile.SmsCodeAuthenticationSecurityConfig;
 import cn.sitedev.core.properties.SecurityConstants;
@@ -12,6 +13,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
@@ -54,6 +57,12 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private SpringSocialConfigurer mySocialSecurityConfig;
 
+    @Autowired
+    private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
+
+    @Autowired
+    private InvalidSessionStrategy invalidSessionStrategy;
+
     /**
      * token repository
      *
@@ -93,6 +102,18 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 //设置登录逻辑
                 .userDetailsService(userDetailsService)
                 .and()
+                // session管理
+                .sessionManagement()
+                // session失效处理
+                .invalidSessionStrategy(invalidSessionStrategy)
+                // 最大session数量
+                .maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
+                // 当session数据达到最大时,阻止后面的登录行为
+                .maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())
+                // session过期策略
+                .expiredSessionStrategy(sessionInformationExpiredStrategy)
+                .and()
+                .and()
                 // 对请求进行授权
                 .authorizeRequests()
                 // 当访问该url时,不需要身份验证
@@ -100,7 +121,10 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
                         securityProperties.getBrowser().getLoginPage(),
-                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*", securityProperties.getBrowser().getSignUpUrl(), "/user/regist")
+                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
+                        securityProperties.getBrowser().getSignUpUrl(),
+                        "/user/regist",
+                        SecurityConstants.DEFAULT_SESSION_INVALID_URL)
                 .permitAll()
                 // 任何请求
                 .anyRequest()

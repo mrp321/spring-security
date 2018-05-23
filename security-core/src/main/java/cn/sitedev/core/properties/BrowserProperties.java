@@ -22,6 +22,10 @@ public class BrowserProperties {
      * 默认注册页
      */
     private String signUpUrl = "/signUp.html";
+    /**
+     * session属性类
+     */
+    private SessionProperties session  = new SessionProperties();
 
     public String getLoginPage() {
         return loginPage;
@@ -53,5 +57,13 @@ public class BrowserProperties {
 
     public void setSignUpUrl(String signUpUrl) {
         this.signUpUrl = signUpUrl;
+    }
+
+    public SessionProperties getSession() {
+        return session;
+    }
+
+    public void setSession(SessionProperties session) {
+        this.session = session;
     }
 }
