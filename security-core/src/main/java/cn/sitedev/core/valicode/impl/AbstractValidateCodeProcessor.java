@@ -72,7 +72,11 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
      * @param validateCode
      */
     private void save(ServletWebRequest request, C validateCode) {
-        sessionStrategy.setAttribute(request, getSessionKey(request), validateCode);
+        // 这里只将code和expireTime存入session中,不和之前一样把validateCode整个存入session中
+        // 因为如果配置了使用redis存储session(spring.session.store-type=REDIS),ImageCode类中的image属性会因为无法被序列化而报错
+        // 报错信息:Caused by: java.io.NotSerializableException: java.awt.image.BufferedImage
+        ValidateCode code = new ValidateCode(validateCode.getCode(), validateCode.getExpireTime());
+        sessionStrategy.setAttribute(request, getSessionKey(request), code);
     }
 
     /**
@@ -93,7 +97,6 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
      * @throws Exception
      */
     protected abstract void send(ServletWebRequest request, C validateCode) throws Exception;
-
 
 
     /**

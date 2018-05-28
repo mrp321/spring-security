@@ -1,5 +1,6 @@
 package cn.sitedev.core.valicode;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
  * @author: QChen
  * @create: 2018/4/26 0018
  **/
-public class ValidateCode {
+public class ValidateCode implements Serializable {
     /**
      * 验证码
      */
@@ -23,6 +24,10 @@ public class ValidateCode {
         this.expireTime = LocalDateTime.now().plusSeconds(expireIn);
     }
 
+    public ValidateCode(String code, LocalDateTime expireTime) {
+        this.code = code;
+        this.expireTime = expireTime;
+    }
 
     public String getCode() {
         return code;
