@@ -1,7 +1,7 @@
 package cn.sitedev.core.properties;
 
 /**
- * @description 常量类
+ * @description 常量接口
  * @auther qchen
  * @date 2018/5/1
  */

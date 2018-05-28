@@ -21,12 +21,22 @@ public class BrowserSecurityBeanConfig {
     @Autowired
     private SecurityProperties securityProperties;
 
+    /**
+     * session失效bean
+     *
+     * @return
+     */
     @Bean
     @ConditionalOnMissingBean(InvalidSessionStrategy.class)
     public InvalidSessionStrategy invalidSessionStrategy() {
         return new MyInvalidSessionStrategy(securityProperties.getBrowser().getSession().getSessionInvalidUrl());
     }
 
+    /**
+     * session过期bean
+     *
+     * @return
+     */
     @Bean
     @ConditionalOnMissingBean(SessionInformationExpiredStrategy.class)
     public SessionInformationExpiredStrategy sessionInformationExpiredStrategy() {

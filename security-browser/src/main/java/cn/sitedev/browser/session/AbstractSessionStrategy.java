@@ -51,16 +51,17 @@ public class AbstractSessionStrategy {
      * javax.servlet.http.HttpServletResponse)
      */
     protected void onSessionInvalid(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        logger.info("session失效");
         if (createNewSession) {
             request.getSession();
         }
 
         String sourceUrl = request.getRequestURI();
         String targetUrl;
-
+        // 如果请求地址以.html结尾,就跳转至默认的session失效页
+        // 如果不是,则返回json数据给前台
         if (StringUtils.endsWithIgnoreCase(sourceUrl, ".html")) {
-            targetUrl = destinationUrl + ".html";
+            targetUrl = destinationUrl;
             logger.info("session失效,跳转到" + targetUrl);
             redirectStrategy.sendRedirect(request, response, targetUrl);
         } else {
