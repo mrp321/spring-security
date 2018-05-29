@@ -16,16 +16,16 @@ import java.util.Scanner;
 @SpringBootApplication(scanBasePackages = ("cn.sitedev"))
 public class DemoApplication {
 
-//    public static void main(String[] args) {
-//        SpringApplication.run(DemoApplication.class, args);
-//    }
-
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String port = scanner.nextLine();
-        new SpringApplicationBuilder(DemoApplication.class)
-                .properties("server.port=" + port).run(args);
+        SpringApplication.run(DemoApplication.class, args);
     }
+
+//    public static void main(String[] args) {
+//        Scanner scanner = new Scanner(System.in);
+//        String port = scanner.nextLine();
+//        new SpringApplicationBuilder(DemoApplication.class)
+//                .properties("server.port=" + port).run(args);
+//    }
 
 
 }
