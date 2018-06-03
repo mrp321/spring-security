@@ -1,6 +1,6 @@
 package cn.sitedev.browser.session;
 
-import cn.sitedev.browser.support.SimpleResponse;
+import cn.sitedev.core.support.SimpleResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;

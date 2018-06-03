@@ -4,8 +4,8 @@ package cn.sitedev.browser.controller;/**
  * @date 2018/4/16 0016
  */
 
-import cn.sitedev.browser.support.SimpleResponse;
 import cn.sitedev.browser.support.SocialUserInfo;
+import cn.sitedev.core.support.SimpleResponse;
 import cn.sitedev.core.properties.SecurityConstants;
 import cn.sitedev.core.properties.SecurityProperties;
 import org.apache.commons.lang.StringUtils;
@@ -20,7 +20,6 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.ProviderSignInUtils;
-import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;

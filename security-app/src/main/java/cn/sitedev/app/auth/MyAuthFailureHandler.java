@@ -1,8 +1,8 @@
-package cn.sitedev.browser.auth;
+package cn.sitedev.app.auth;
 
-import cn.sitedev.core.support.SimpleResponse;
 import cn.sitedev.core.properties.LoginType;
 import cn.sitedev.core.properties.SecurityProperties;
+import cn.sitedev.core.support.SimpleResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

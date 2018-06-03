@@ -1,4 +1,4 @@
-package cn.sitedev.browser.auth;
+package cn.sitedev.app.auth;
 
 import cn.sitedev.core.properties.LoginType;
 import cn.sitedev.core.properties.SecurityProperties;
