@@ -57,6 +57,11 @@ public class MyResourceServerConfig extends ResourceServerConfigurerAdapter {
      */
     @Autowired
     private SpringSocialConfigurer mySocialSecurityConfig;
+    /**
+     * 验证码安全配置类
+     */
+    @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
 
     @Override
@@ -72,7 +77,9 @@ public class MyResourceServerConfig extends ResourceServerConfigurerAdapter {
                 // 认证失败处理器
                 .failureHandler(authenticationFailureHandler);
 
-        http
+        http    // 应用验证码相关配置
+                .apply(validateCodeSecurityConfig)
+                .and()
                 // 应用短信验证码相关配置
                 .apply(smsCodeAuthenticationSecurityConfig)
                 .and()
