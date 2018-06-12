@@ -3,7 +3,6 @@ package cn.sitedev.core.valicode.image;
 import cn.sitedev.core.valicode.ValidateCode;
 
 import java.awt.image.BufferedImage;
-import java.time.LocalDateTime;
 
 /**
  * @description: 图片验证码

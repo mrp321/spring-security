@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import javax.servlet.Servlet;
-
 /**
  * 短信验证码处理器
  *

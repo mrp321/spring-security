@@ -1,29 +1,21 @@
 package cn.sitedev.app.auth;
 
+import cn.sitedev.app.social.openid.OpenIdAuthenticationSecurityConfig;
 import cn.sitedev.core.auth.mobile.SmsCodeAuthenticationSecurityConfig;
 import cn.sitedev.core.properties.SecurityConstants;
 import cn.sitedev.core.properties.SecurityProperties;
 import cn.sitedev.core.valicode.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.session.InvalidSessionStrategy;
-import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.social.security.SpringSocialConfigurer;
 
-import javax.sql.DataSource;
-
 /**
- * @description 资源服务器配置
+ * @description 资源服务器配置类
  * @auther qchen
  * @date 2018/5/31
  */
@@ -62,7 +54,11 @@ public class MyResourceServerConfig extends ResourceServerConfigurerAdapter {
      */
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
-
+    /**
+     * openid认证安全配置类
+     */
+    @Autowired
+    private OpenIdAuthenticationSecurityConfig openIdAuthenticationSecurityConfig;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -86,6 +82,9 @@ public class MyResourceServerConfig extends ResourceServerConfigurerAdapter {
                 // 应用社交安全相关配置
                 // 配置的作用就是向Spring Security的过滤器链上添加一个过滤器,过滤器会拦截特定请求,引导用户进行社交登录
                 .apply(mySocialSecurityConfig)
+                .and()
+                // openid认证安全配置类
+                .apply(openIdAuthenticationSecurityConfig)
                 .and()
                 // 对请求进行授权
                 .authorizeRequests()

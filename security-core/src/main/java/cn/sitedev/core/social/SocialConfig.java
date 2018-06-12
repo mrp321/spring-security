@@ -33,6 +33,8 @@ public class SocialConfig extends SocialConfigurerAdapter {
     private SecurityProperties securityProperties;
     @Autowired(required = false)
     private ConnectionSignUp connectionSignUp;
+    @Autowired(required = false)
+    private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
 
     /**
      * 获取用户连接仓库
@@ -63,6 +65,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
         MySpringSocialConfigurer configurer = new MySpringSocialConfigurer(filterProcessesUrl);
         //设置注册页面
         configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
+        configurer.setSocialAuthenticationFilterPostProcessor(socialAuthenticationFilterPostProcessor);
         return configurer;
     }
 

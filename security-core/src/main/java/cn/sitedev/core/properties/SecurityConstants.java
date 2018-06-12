@@ -43,5 +43,17 @@ public interface SecurityConstants {
      * session失效默认的跳转url
      */
     public static final String DEFAULT_SESSION_INVALID_URL = "/session-invalid.html";
+    /**
+     * 默认的OPENID登录请求处理url
+     */
+    public static final String DEFAULT_LOGIN_PROCESSING_URL_OPENID = "/auth/openid";
+    /**
+     * openid参数名
+     */
+    public static final String DEFAULT_PARAMETER_NAME_OPENID = "openId";
+    /**
+     * providerId参数名
+     */
+    public static final String DEFAULT_PARAMETER_NAME_PROVIDERID = "providerId";
 
 }
