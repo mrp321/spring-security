@@ -6,12 +6,7 @@ import cn.sitedev.core.valicode.ValidateCodeGenerator;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.Random;
 
 /**
  * @description: 短信验证码生成器

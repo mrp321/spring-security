@@ -1,5 +1,8 @@
 package cn.sitedev.demo.controller;
 
+//import cn.sitedev.app.social.impl.AppSignUpUtils;
+
+import cn.sitedev.app.social.impl.AppSignUpUtils;
 import cn.sitedev.demo.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,12 +29,18 @@ public class UserController {
     @Autowired
     private ProviderSignInUtils providerSignInUtils;
 
+    @Autowired
+    private AppSignUpUtils appSignUpUtils;
+
+
     @PostMapping("regist")
-    public void regist(User user, HttpServletRequest request) {
+    public void regist(HttpServletRequest request, User user) {
         // 不管时注册用户,还是绑定用户,都会拿到一个唯一标识
         String userId = user.getUsername();
-        // 执行注册操作,向数据库UserConnection中插入数据
-        providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+        // 执行注册操作,向数据库UserConnection中插入数据(浏览器端注册)
+//        providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+        // App端注册
+        appSignUpUtils.doPostSignUp(new ServletWebRequest(request), userId);
 
     }
 

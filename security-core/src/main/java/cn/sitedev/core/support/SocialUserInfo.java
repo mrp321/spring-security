@@ -1,4 +1,4 @@
-package cn.sitedev.browser.support;
+package cn.sitedev.core.support;
 
 /**
  * @description 社交用户信息类

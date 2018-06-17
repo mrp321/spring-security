@@ -4,7 +4,7 @@ package cn.sitedev.browser.controller;/**
  * @date 2018/4/16 0016
  */
 
-import cn.sitedev.browser.support.SocialUserInfo;
+import cn.sitedev.core.support.SocialUserInfo;
 import cn.sitedev.core.support.SimpleResponse;
 import cn.sitedev.core.properties.SecurityConstants;
 import cn.sitedev.core.properties.SecurityProperties;

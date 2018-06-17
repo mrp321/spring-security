@@ -1,6 +1,5 @@
 package cn.sitedev.core.valicode.image;
 
-import cn.sitedev.core.valicode.ValidateCode;
 import cn.sitedev.core.valicode.impl.AbstractValidateCodeProcessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
