@@ -1,8 +1,6 @@
 package cn.sitedev.demo.controller;
 
 //import cn.sitedev.app.social.impl.AppSignUpUtils;
-
-import cn.sitedev.app.social.impl.AppSignUpUtils;
 import cn.sitedev.core.properties.SecurityProperties;
 import cn.sitedev.demo.dto.User;
 import io.jsonwebtoken.Claims;
@@ -34,8 +32,8 @@ public class UserController {
     @Autowired
     private ProviderSignInUtils providerSignInUtils;
 
-    @Autowired
-    private AppSignUpUtils appSignUpUtils;
+//    @Autowired
+//    private AppSignUpUtils appSignUpUtils;
 
     @Autowired
     private SecurityProperties securityProperties;
@@ -46,9 +44,9 @@ public class UserController {
         // 不管时注册用户,还是绑定用户,都会拿到一个唯一标识
         String userId = user.getUsername();
         // 执行注册操作,向数据库UserConnection中插入数据(浏览器端注册)
-//        providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+        providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
         // App端注册
-        appSignUpUtils.doPostSignUp(new ServletWebRequest(request), userId);
+//        appSignUpUtils.doPostSignUp(new ServletWebRequest(request), userId);
 
     }
 

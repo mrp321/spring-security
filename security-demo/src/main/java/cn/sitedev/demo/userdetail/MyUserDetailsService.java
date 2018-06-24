@@ -50,6 +50,6 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
         // password : 密码
         // authorities : 用户权限集合
         // AuthorityUtils.commaSeparatedStringToAuthorityList(String authorityString): 将以逗号分隔的权限字符串转为权限集合
-        return new SocialUser(userId, password, AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER"));
+        return new SocialUser(userId, password, AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN,ROLE_USER"));
     }
 }

@@ -9,6 +9,7 @@ import cn.sitedev.core.valicode.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -143,6 +144,8 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                         securityProperties.getBrowser().getSignOutUrl(),
                         "/signOutSuccess.html")
                 .permitAll()
+                // 只有有ADMIN权限的用户,才能访问/user/*
+                .antMatchers(HttpMethod.GET, "/user/*").hasRole("ADMIN")
                 // 任何请求
                 .anyRequest()
                 // 都进行授权认证
