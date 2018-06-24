@@ -10,6 +10,9 @@
         <module name="security-browser" />
         <module name="security-core" />
         <module name="security-demo" />
+        <module name="sso-client1" />
+        <module name="sso-client2" />
+        <module name="sso-server" />
       </profile>
     </annotationProcessing>
   </component>
