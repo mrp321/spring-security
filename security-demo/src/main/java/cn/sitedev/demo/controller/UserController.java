@@ -3,7 +3,11 @@ package cn.sitedev.demo.controller;
 //import cn.sitedev.app.social.impl.AppSignUpUtils;
 
 import cn.sitedev.app.social.impl.AppSignUpUtils;
+import cn.sitedev.core.properties.SecurityProperties;
 import cn.sitedev.demo.dto.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +36,9 @@ public class UserController {
 
     @Autowired
     private AppSignUpUtils appSignUpUtils;
+
+    @Autowired
+    private SecurityProperties securityProperties;
 
 
     @PostMapping("regist")
@@ -76,6 +84,19 @@ public class UserController {
     @GetMapping("/me3")
     public Object getCurUser(@AuthenticationPrincipal UserDetails userDetails) {
         return userDetails;
+    }
+
+    @GetMapping("/me4")
+    public Object getCurUser(Authentication authenction, HttpServletRequest request) throws UnsupportedEncodingException {
+        // 从请求头中获取jwt
+        String header = request.getHeader("Authorization");
+        String token = StringUtils.substringAfter(header, "bearer ");
+        // 将jwt解析为一个Claims对象,用于从jwt 中获取扩展信息
+        Claims claims = Jwts.parser().setSigningKey(securityProperties.getOauth2().getJwtSigningKey().getBytes("UTF-8")).parseClaimsJws(token).getBody();
+        // 从jwt中获取扩展信息
+        String company = (String) claims.get("company");
+        System.out.println("company=" + company);
+        return authenction;
     }
 
     /**
