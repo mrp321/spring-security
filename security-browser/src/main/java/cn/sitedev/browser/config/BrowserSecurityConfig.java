@@ -3,6 +3,8 @@ package cn.sitedev.browser.config;
 import cn.sitedev.browser.session.MyExpiredSessionStrategy;
 import cn.sitedev.core.auth.AbstractChannelSecurityConfig;
 import cn.sitedev.core.auth.mobile.SmsCodeAuthenticationSecurityConfig;
+import cn.sitedev.core.authorize.AuthorizeConfigManager;
+import cn.sitedev.core.authorize.AuthorizeConfigProvider;
 import cn.sitedev.core.properties.SecurityConstants;
 import cn.sitedev.core.properties.SecurityProperties;
 import cn.sitedev.core.valicode.ValidateCodeSecurityConfig;
@@ -68,6 +70,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private LogoutSuccessHandler logoutSuccessHandler;
 
+    @Autowired
+    private AuthorizeConfigManager authorizeConfigManager;
+
     /**
      * token repository
      *
@@ -130,31 +135,10 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 // 退出后删除cookies
                 .deleteCookies("JSESSIONID")
                 .and()
-                // 对请求进行授权
-                .authorizeRequests()
-                // 当访问该url时,不需要身份验证
-                // 如果不加这个配置,浏览器访问登录页面时,会报错:"localhost 将您重定向的次数过多"
-                .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-                        SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
-                        securityProperties.getBrowser().getLoginPage(),
-                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
-                        securityProperties.getBrowser().getSignUpUrl(),
-                        "/user/regist",
-                        securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
-                        securityProperties.getBrowser().getSignOutUrl(),
-                        "/signOutSuccess.html")
-                .permitAll()
-                // 只有有ADMIN权限的用户,才能访问/user/*
-                .antMatchers(HttpMethod.GET, "/user/*").hasRole("ADMIN")
-                // 任何请求
-                .anyRequest()
-                // 都进行授权认证
-                .authenticated()
-                .and()
                 // 此处暂时关闭CSRF(跨站防护)
                 // 如果不关闭,登陆成功后,会报下面的错误
                 // Invalid CSRF Token 'null' was found on the request parameter '_csrf' or header 'X-CSRF-TOKEN'.
                 .csrf().disable();
-
+        authorizeConfigManager.config(http.authorizeRequests());
     }
 }
