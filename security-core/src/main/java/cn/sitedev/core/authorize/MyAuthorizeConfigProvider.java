@@ -3,6 +3,7 @@ package cn.sitedev.core.authorize;
 import cn.sitedev.core.properties.SecurityConstants;
 import cn.sitedev.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
  * @date 2018/6/25
  */
 @Component
+// 添加@Order(Integer.MIN_VALUE)注解,表示该类中的权限配置最先生效
+@Order(Integer.MIN_VALUE)
 public class MyAuthorizeConfigProvider implements AuthorizeConfigProvider {
 
     @Autowired

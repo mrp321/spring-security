@@ -60,5 +60,6 @@
         <module>sso-client1</module>
         <module>sso-client2</module>
         <module>sso-server</module>
+        <module>security-authorize</module>
     </modules>
 </project>

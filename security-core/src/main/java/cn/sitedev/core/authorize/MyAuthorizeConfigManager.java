@@ -5,7 +5,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * @description 授权配置管理者接口(收集所有的AuthorizeConfigProvider)
@@ -16,7 +16,7 @@ import java.util.Set;
 public class MyAuthorizeConfigManager implements AuthorizeConfigManager {
 
     @Autowired
-    private Set<AuthorizeConfigProvider> authorizeConfigProviders;
+    private List<AuthorizeConfigProvider> authorizeConfigProviders;
 
 
     @Override
@@ -24,7 +24,8 @@ public class MyAuthorizeConfigManager implements AuthorizeConfigManager {
         for (AuthorizeConfigProvider authorizeConfigProvider : authorizeConfigProviders) {
             authorizeConfigProvider.config(config);
         }
-        // 如果上面的配置外,其他的所有请求都需要经过授权认证
-        config.anyRequest().authenticated();
+        // 除了上面的配置外,其他的所有请求都需要经过授权认证
+        // 由于这里的.anyRequest().authenticated()配置会覆盖掉DemoAuthorizeConfigProvider类中.anyRequest().access("@rbacService.hasPermission(request, authentication)");的配置,因此需要暂时将这个配置注释掉
+//        config.anyRequest().authenticated();
     }
 }
